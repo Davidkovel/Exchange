@@ -191,6 +191,7 @@ async def process_callback(callback_query: types.CallbackQuery):
         print('Error accepting message', ex)
         await callback_query.answer("❌ Ошибка обработки", show_alert=True)
 
+
 @payment_router.message(Command("edit_payment"))
 async def start_edit(message: types.Message):
     await message.answer(
@@ -239,10 +240,13 @@ app.add_middleware(
 
 
 async def start_bot():
+    dp.include_router(payment_router)
     await dp.start_polling(bot)
+
 
 def main():
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
 
 if __name__ == "__main__":
     main()
