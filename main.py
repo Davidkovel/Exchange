@@ -10,7 +10,7 @@ import httpx
 import requests
 import uvicorn
 from aiogram.filters import Command
-from fastapi import FastAPI, Form, UploadFile, BackgroundTasks, APIRouter
+from fastapi import FastAPI, Form, UploadFile, BackgroundTasks
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,7 +31,7 @@ TELEGRAM_CHAT_ID = "-1002704025045"
 bot = Bot(token=TELEGRAM_BOT_TOKEN)
 dp = Dispatcher()
 
-payment_router = APIRouter()
+payment_router = Router()
 
 json_service = JsonService()
 
@@ -224,7 +224,6 @@ async def process_payment_update(message: types.Message):
                              parse_mode="HTML")
 
 
-app.include_router(payment_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # или конкретный домен вместо "*"
