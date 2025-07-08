@@ -22,6 +22,7 @@ from aio_pika.abc import AbstractRobustConnection
 
 from crypto_rates import rates_lock, fiat_rates, crypto_rates, update_rates
 from data import JsonService
+from logger import logger
 
 QUEUE_NAME = "payment_queue"
 
