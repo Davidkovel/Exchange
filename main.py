@@ -161,6 +161,7 @@ async def process_payment_background(
 @payment_router.callback_query(lambda c: c.data.startswith(('approve_', 'reject_')))
 async def process_callback(callback_query: types.CallbackQuery):
     try:
+        print("Callback triggered:", callback_query.data)
         email = callback_query.data.split('_')[1]
         payload = payment_requests.get(email)
 
@@ -188,6 +189,7 @@ async def process_callback(callback_query: types.CallbackQuery):
         )
     except Exception as ex:
         print('Error accepting message', ex)
+        await callback_query.answer("❌ Ошибка обработки", show_alert=True)
 
 @payment_router.message(Command("edit_payment"))
 async def start_edit(message: types.Message):
