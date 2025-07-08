@@ -160,32 +160,34 @@ async def process_payment_background(
 
 @payment_router.callback_query(lambda c: c.data.startswith(('approve_', 'reject_')))
 async def process_callback(callback_query: types.CallbackQuery):
-    email = callback_query.data.split('_')[1]
-    payload = payment_requests.get(email)
+    try:
+        email = callback_query.data.split('_')[1]
+        payload = payment_requests.get(email)
 
-    if callback_query.data.startswith('approve_'):
-        if payload:
-            message = aio_pika.Message(
-                body=json.dumps(payload).encode(),
-                delivery_mode=aio_pika.DeliveryMode.PERSISTENT
-            )
+        if callback_query.data.startswith('approve_'):
+            if payload:
+                message = aio_pika.Message(
+                    body=json.dumps(payload).encode(),
+                    delivery_mode=aio_pika.DeliveryMode.PERSISTENT
+                )
 
-            await app.state.channel.default_exchange.publish(
-                message,
-                routing_key=QUEUE_NAME
-            )
+                await app.state.channel.default_exchange.publish(
+                    message,
+                    routing_key=QUEUE_NAME
+                )
 
-    else:
-        pass
-        # await callback_query.answer("Платеж отклонен")
+        else:
+            pass
+            # await callback_query.answer("Платеж отклонен")
 
-    payment_requests.pop(email, None)
+        payment_requests.pop(email, None)
 
-    await bot.delete_message(
-        chat_id=callback_query.message.chat.id,
-        message_id=callback_query.message.message_id
-    )
-
+        await bot.delete_message(
+            chat_id=callback_query.message.chat.id,
+            message_id=callback_query.message.message_id
+        )
+    except Exception as ex:
+        print('Error accepting message', ex)
 
 @payment_router.message(Command("edit_payment"))
 async def start_edit(message: types.Message):
