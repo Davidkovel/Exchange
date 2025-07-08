@@ -154,7 +154,7 @@ async def process_payment_background(
         import traceback
 
         logger.error("ERROR:", e)
-        # traceback.print_exc()
+        traceback.print_exc()
         return {"status": "error", "message": str(e)}
 
 
