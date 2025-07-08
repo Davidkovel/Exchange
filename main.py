@@ -13,7 +13,7 @@ from aiogram.filters import Command
 from fastapi import FastAPI, Form, UploadFile, BackgroundTasks
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-
+from fastapi.middleware.cors import CORSMiddleware
 from aiogram import Bot, Dispatcher, types, Router, F
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputFile, FSInputFile
 
@@ -100,7 +100,7 @@ async def submit_payment(background_tasks: BackgroundTasks, receipt: UploadFile,
     except Exception as e:
         import traceback
         logger.error("ERROR:", e)
-        #traceback.print_exc()
+        # traceback.print_exc()
         return {"status": "error", "message": str(e)}
 
 
@@ -153,7 +153,7 @@ async def process_payment_background(
         import traceback
 
         logger.error("ERROR:", e)
-        #traceback.print_exc()
+        # traceback.print_exc()
         return {"status": "error", "message": str(e)}
 
 
@@ -224,11 +224,19 @@ async def process_payment_update(message: types.Message):
                              parse_mode="HTML")
 
 
+app.include_router(payment_router)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # или конкретный домен вместо "*"
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 async def start_bot():
-    dp.include_router(payment_router)
     await dp.start_polling(bot)
 
 
-
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

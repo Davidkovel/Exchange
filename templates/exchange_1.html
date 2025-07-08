@@ -112,6 +112,8 @@
         </div>
     </div>
 <script>
+    const API_URL = "https://www.trustxchange.online";
+
     const cryptoRates = {
         "BTC": 108000,
         "ETH": 2450,
@@ -170,7 +172,7 @@
         formData.append('to_fiat_currency', toFiatCurrency);
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/submit-payment', {
+            const response = await fetch(`${API_URL}/submit-payment`, {
                 method: 'POST',
                 body: formData
             });
@@ -190,7 +192,7 @@
     });
 
     async function loadPaymentDetails() {
-        const response = await fetch('/payment-details');
+        const response = await fetch(`${API_URL}/payment-details`);
         const data = await response.json();
 
         document.getElementById('cardNumber').textContent = data.card_number;
