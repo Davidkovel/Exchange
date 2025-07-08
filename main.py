@@ -10,7 +10,7 @@ import httpx
 import requests
 import uvicorn
 from aiogram.filters import Command
-from fastapi import FastAPI, Form, UploadFile, BackgroundTasks
+from fastapi import FastAPI, Form, UploadFile, BackgroundTasks, APIRouter
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,7 +31,7 @@ TELEGRAM_CHAT_ID = "-1002704025045"
 bot = Bot(token=TELEGRAM_BOT_TOKEN)
 dp = Dispatcher()
 
-payment_router = Router()
+payment_router = APIRouter()
 
 json_service = JsonService()
 
@@ -237,6 +237,8 @@ app.add_middleware(
 async def start_bot():
     await dp.start_polling(bot)
 
+def main():
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    main()
