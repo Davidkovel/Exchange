@@ -41,7 +41,7 @@ async def lifespan(app: FastAPI):
     # Startup
     asyncio.create_task(update_rates())
     asyncio.create_task(start_bot())
-    connection = await aio_pika.connect_robust("amqp://guest:guest@127.0.0.1/")
+    connection = await aio_pika.connect_robust("amqp://admin:admin@95.46.107.166:5672/")
     channel = await connection.channel()
     await channel.declare_queue(QUEUE_NAME, durable=True)
     app.state.connection = connection
@@ -113,23 +113,6 @@ async def process_payment_background(
         to_fiat_currency: str
 ):
     try:
-        # crypto_rates = {
-        #     "BTC": 108000,
-        #     "ETH": 2450,
-        #     "SOL": 150,
-        #     "LTC": 88,
-        #     "XRP": 2.4,
-        #     "TRX": 0.27,
-        #     "DOGE": 0.16,
-        #     "USDT": 1
-        # }
-        #
-        # fiat_rates = {
-        #     "UAH": 45,
-        #     "UZB": 0.000079,
-        #     "USD": 1
-        # }
-
         async with rates_lock:
             # 1. Конвертируем сумму в фиате (to_fiat_currency) в USD
             usd_amount = amount / fiat_rates[to_fiat_currency.upper()]
@@ -249,5 +232,3 @@ async def start_bot():
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
-
-# ДОБАВИТЬ ПРОВЕРКУ НА AMOUNT И CURRENCY ЧТОБЫ НЕ МОГ ОТПРАВИТЬ БЕЗ НИХ
