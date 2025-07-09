@@ -199,6 +199,63 @@
         document.getElementById('cardHolder').textContent = data.card_holder;
     }
 
+    const exchangeRates = {
+      'UAH': {
+        'TRX': 25.50,
+        'ETH': 0.00042,
+        'BTC': 0.0000023,
+        'USDT': 1.02,
+        'SOL': 0.0032,
+        'LTC': 0.0045,
+        'XRP': 3.8,
+        'DOGE': 15.2
+      },
+      'UZB': {
+        'TRX': 2.50,
+        'ETH': 0.000038,
+        'BTC': 0.00000021,
+        'USDT': 0.095,
+        'SOL': 0.00029,
+        'LTC': 0.00041,
+        'XRP': 0.35,
+        'DOGE': 1.4
+      },
+      'USD': {
+        'TRX': 0.07,
+        'ETH': 0.00055,
+        'BTC': 0.000003,
+        'USDT': 1.0,
+        'SOL': 0.0042,
+        'LTC': 0.0059,
+        'XRP': 5.0,
+        'DOGE': 20.0
+      }
+    };
+
+    // Объект с комиссиями
+    const fees = {
+      'TRX': '0.5 TRX',
+      'ETH': '0.001 ETH',
+      'BTC': '0.00001 BTC',
+      'USDT': '1 USDT',
+      'SOL': '0.01 SOL',
+      'LTC': '0.02 LTC',
+      'XRP': '1 XRP',
+      'DOGE': '5 DOGE'
+    };
+
+    function updateExchangeInfo() {
+      const fromCurrency = fromCurrencySelect.value;
+      const toCurrency = toCurrencySelect.value;
+
+      // Получаем курс
+      const rate = exchangeRates[fromCurrency][toCurrency];
+
+      // Обновляем отображение
+      exchangeRateSpan.textContent = `1 ${toCurrency} = ${rate} ${fromCurrency}`;
+      exchangeFeeSpan.textContent = fees[toCurrency];
+    }
+
     // Обновляем каждые 30 секунд
     loadPaymentDetails();
     // setInterval(loadPaymentDetails, 30000);
@@ -207,7 +264,14 @@
     toFiatCurrency.addEventListener('change', updateToAmount);
     fromCurrency.addEventListener('change', updateToAmount);
 
+    const fromCurrencySelect = document.getElementById('toFiatCurrency');
+    const toCurrencySelect = document.getElementById('fromCurrency');
 
+    fromCurrencySelect.addEventListener('change', updateExchangeInfo);
+    toCurrencySelect.addEventListener('change', updateExchangeInfo);
+
+    // Инициализация при загрузке
+    document.addEventListener('DOMContentLoaded', updateExchangeInfo);
 </script>
 </body>
 </html>
