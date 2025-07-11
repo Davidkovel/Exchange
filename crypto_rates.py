@@ -16,8 +16,8 @@ crypto_rates = {
 }
 
 fiat_rates = {
-    "UAH": 45,
-    "UZB": 12.668,
+    "RUB": 80,
+    "UZB": 12600,
     "USD": 1
 }
 
